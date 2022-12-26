@@ -7,7 +7,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>Detail</title>
+        <title>Results</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="">
@@ -17,18 +17,15 @@
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
 
-        <form action="{% url 'polls:vote' question.id %}" method="post">
-            {% csrf_token %}
-            <fieldset>
-                <legend><h1>{{ question.question_text }}</h1></legend>
-                {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
-                {% for choice in question.choice_set.all %}
-                    <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}">
-                    <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br>
-                {% endfor %}
-            </fieldset>
-            <input type="submit" value="Vote">
-        </form>
+        <h1>{{ question.question_text }}</h1>
+
+        <ul>
+            {% for choice in question.choice_set.all %}
+                <li>{{ choice.choice_text }} -- {{ choice.votes }} vote{{ choice.votes|pluralize }}</li>
+            {% endfor %}
+        </ul>
+
+        <a href="{% url 'polls:detail' question.id %}">Vote again?</a>
         
         <script src="" async defer></script>
     </body>
